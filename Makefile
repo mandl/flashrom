@@ -304,6 +304,11 @@ UNSUPPORTED_FEATURES += CONFIG_BUSPIRATE_SPI=yes
 else
 override CONFIG_BUSPIRATE_SPI = no
 endif
+ifeq ($(CONFIG_FERNVALE_SPI), yes)
+UNSUPPORTED_FEATURES += CONFIG_FERNVALE_SPI=yes
+else
+override CONFIG_FERNVALE_SPI = no
+endif
 ifeq ($(CONFIG_SERPROG), yes)
 UNSUPPORTED_FEATURES += CONFIG_SERPROG=yes
 else
@@ -547,54 +552,60 @@ $(info $(shell ./util/getrevision.sh -c 2>/dev/null || echo "Files don't seem to
 ###############################################################################
 # Default settings of CONFIG_* variables.
 
+CONFIG_ENABLE_LIBPCI_PROGRAMMERS ?= no
+
+CONFIG_ENABLE_LIBUSB1_PROGRAMMERS ?= no
+
+CONFIG_FERNVALE_SPI ?= yes
+
 # Always enable internal/onboard support for now.
 CONFIG_INTERNAL ?= yes
 
 # Always enable serprog for now.
-CONFIG_SERPROG ?= yes
+CONFIG_SERPROG ?= no
 
 # RayeR SPIPGM hardware support
-CONFIG_RAYER_SPI ?= yes
+CONFIG_RAYER_SPI ?= no
 
 # PonyProg2000 SPI hardware support
-CONFIG_PONY_SPI ?= yes
+CONFIG_PONY_SPI ?= no
 
 # Always enable 3Com NICs for now.
-CONFIG_NIC3COM ?= yes
+CONFIG_NIC3COM ?= no
 
 # Enable NVIDIA graphics cards. Note: write and erase do not work properly.
-CONFIG_GFXNVIDIA ?= yes
+CONFIG_GFXNVIDIA ?= no
 
 # Always enable SiI SATA controllers for now.
-CONFIG_SATASII ?= yes
+CONFIG_SATASII ?= no
 
 # Highpoint (HPT) ATA/RAID controller support.
 # IMPORTANT: This code is not yet working!
 CONFIG_ATAHPT ?= no
 
 # VIA VT6421A LPC memory support
-CONFIG_ATAVIA ?= yes
+CONFIG_ATAVIA ?= no
 
 # Promise ATA controller support.
 CONFIG_ATAPROMISE ?= no
 
 # Always enable FT2232 SPI dongles for now.
-CONFIG_FT2232_SPI ?= yes
+CONFIG_FT2232_SPI ?= no
 
 # Always enable Altera USB-Blaster dongles for now.
-CONFIG_USBBLASTER_SPI ?= yes
+CONFIG_USBBLASTER_SPI ?= no
 
 # MSTAR DDC support needs more tests/reviews/cleanups.
 CONFIG_MSTARDDC_SPI ?= no
 
 # Always enable PICkit2 SPI dongles for now.
-CONFIG_PICKIT2_SPI ?= yes
+CONFIG_PICKIT2_SPI ?= no
 
 # Always enable dummy tracing for now.
 CONFIG_DUMMY ?= yes
 
 # Always enable Dr. Kaiser for now.
-CONFIG_DRKAISER ?= yes
+CONFIG_DRKAISER ?= no
 
 # Always enable Realtek NICs for now.
 CONFIG_NICREALTEK ?= yes
@@ -603,34 +614,34 @@ CONFIG_NICREALTEK ?= yes
 CONFIG_NICNATSEMI ?= no
 
 # Always enable Intel NICs for now.
-CONFIG_NICINTEL ?= yes
+CONFIG_NICINTEL ?= no
 
 # Always enable SPI on Intel NICs for now.
 CONFIG_NICINTEL_SPI ?= yes
 
 # Always enable EEPROM on Intel NICs for now.
-CONFIG_NICINTEL_EEPROM ?= yes
+CONFIG_NICINTEL_EEPROM ?= no
 
 # Always enable SPI on OGP cards for now.
-CONFIG_OGP_SPI ?= yes
+CONFIG_OGP_SPI ?= no
 
 # Always enable Bus Pirate SPI for now.
-CONFIG_BUSPIRATE_SPI ?= yes
+CONFIG_BUSPIRATE_SPI ?= no
 
 # Always enable Dediprog SF100 for now.
 CONFIG_DEDIPROG ?= yes
 
 # Always enable Marvell SATA controllers for now.
-CONFIG_SATAMV ?= yes
+CONFIG_SATAMV ?= no
 
 # Enable Linux spidev interface by default. We disable it on non-Linux targets.
-CONFIG_LINUX_SPI ?= yes
+CONFIG_LINUX_SPI ?= no
 
 # Always enable ITE IT8212F PATA controllers for now.
-CONFIG_IT8212 ?= yes
+CONFIG_IT8212 ?= no
 
 # Winchiphead CH341A
-CONFIG_CH341A_SPI ?= yes
+CONFIG_CH341A_SPI ?= no
 
 # Disable wiki printing by default. It is only useful if you have wiki access.
 CONFIG_PRINT_WIKI ?= no
@@ -887,6 +898,12 @@ ifeq ($(CONFIG_BUSPIRATE_SPI), yes)
 FEATURE_CFLAGS += -D'CONFIG_BUSPIRATE_SPI=1'
 PROGRAMMER_OBJS += buspirate_spi.o
 NEED_SERIAL += CONFIG_BUSPIRATE_SPI
+endif
+
+ifeq ($(CONFIG_FERNVALE_SPI), yes)
+FEATURE_CFLAGS += -D'CONFIG_FERNVALE_SPI=1'
+PROGRAMMER_OBJS += fernvale_spi.o
+NEED_SERIAL := yes
 endif
 
 ifeq ($(CONFIG_DEDIPROG), yes)

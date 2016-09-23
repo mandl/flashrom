@@ -72,6 +72,9 @@ enum programmer {
 #if CONFIG_BUSPIRATE_SPI == 1
 	PROGRAMMER_BUSPIRATE_SPI,
 #endif
+#if CONFIG_FERNVALE_SPI == 1
+	PROGRAMMER_FERNVALE_SPI,
+#endif
 #if CONFIG_DEDIPROG == 1
 	PROGRAMMER_DEDIPROG,
 #endif
@@ -520,6 +523,11 @@ int register_spi_bitbang_master(const struct bitbang_spi_master *master);
 int buspirate_spi_init(void);
 #endif
 
+/* fernvale_spi.c */
+#if CONFIG_FERNVALE_SPI == 1
+int fernvale_spi_init(void);
+#endif
+
 /* linux_spi.c */
 #if CONFIG_LINUX_SPI == 1
 int linux_spi_init(void);
@@ -575,6 +583,9 @@ enum spi_controller {
 #endif
 #if CONFIG_BUSPIRATE_SPI == 1
 	SPI_CONTROLLER_BUSPIRATE,
+#endif
+#if CONFIG_FERNVALE_SPI == 1
+	SPI_CONTROLLER_FERNVALE,
 #endif
 #if CONFIG_DEDIPROG == 1
 	SPI_CONTROLLER_DEDIPROG,
